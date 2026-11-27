@@ -7,6 +7,9 @@ on:
       - "BIZORA-Android-Ready(2).zip"
       - ".github/workflows/android-apk.yml"
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,8 +28,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: app-source/package-lock.json
 
       - name: Set up Java
         uses: actions/setup-java@v4
