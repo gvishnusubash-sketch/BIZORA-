@@ -1,0 +1,63 @@
+name: Build BIZORA Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "BIZORA-Android-Ready(2).zip"
+      - ".github/workflows/android-apk.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract Android-ready project
+        run: |
+          mkdir -p app-source
+          unzip -q "BIZORA-Android-Ready(2).zip" -d app-source
+          test -f app-source/package.json
+          test -d app-source/src
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app-source/package-lock.json
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies and build web app
+        working-directory: app-source
+        run: |
+          npm install
+          npm run build
+
+      - name: Generate Android project and sync
+        working-directory: app-source
+        run: |
+          npx cap add android
+          npx cap sync android
+
+      - name: Build debug APK
+        working-directory: app-source/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BIZORA-Android-debug-APK
+          path: app-source/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
