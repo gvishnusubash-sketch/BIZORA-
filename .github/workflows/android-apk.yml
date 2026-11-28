@@ -25,6 +25,20 @@ jobs:
           test -f app-source/package.json
           test -d app-source/src
 
+      - name: Inspect actual authentication implementation
+        working-directory: app-source
+        run: |
+          {
+            echo "=== SOURCE FILES ==="
+            find src -type f | sort
+            echo
+            echo "=== AUTHENTICATION REFERENCES ==="
+            grep -RniE "signInWithRedirect|signInWithPopup|signInWithGoogle|GoogleAuthProvider|FirebaseAuthentication|Capacitor.isNativePlatform|onAuthStateChanged|handleGoogle" src --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' || true
+            echo
+            echo "=== CAPACITOR AUTH DEPENDENCIES ==="
+            node -e "const p=require('./package.json'); console.log(JSON.stringify(Object.fromEntries(Object.entries({...p.dependencies,...p.devDependencies}).filter(([k])=>/capacitor.*auth|firebase.*auth/i.test(k))),null,2))"
+          } > ../auth-diagnostic.txt
+
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
@@ -65,6 +79,13 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
+
+      - name: Upload authentication diagnostic
+        uses: actions/upload-artifact@v4
+        with:
+          name: BIZORA-auth-diagnostic
+          path: auth-diagnostic.txt
+          if-no-files-found: error
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
