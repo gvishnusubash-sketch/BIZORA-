@@ -106,7 +106,13 @@ jobs:
             echo
             echo "=== ANDROID DEBUG SIGNING FINGERPRINTS ==="
             cat ../signing-report.txt
-          } >> ../auth-diagnostic.txt
+            echo
+            echo "=== ANDROID VARIABLES ==="
+            cat ../variables.gradle
+            echo
+            echo "=== GENERATED GOOGLE SERVICES RESOURCES ==="
+            grep -RniE "default_web_client_id|google_app_id" app/build/generated/res/google-services/debug/values || true
+          } >> ../../auth-diagnostic.txt
 
       - name: Upload authentication diagnostic
         uses: actions/upload-artifact@v4
