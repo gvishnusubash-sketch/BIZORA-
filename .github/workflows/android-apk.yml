@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "BIZORA-Android-Ready(2).zip"
+      - "bizora (2).zip"
+      - "google-services.json"
       - ".github/workflows/android-apk.yml"
 
 permissions:
@@ -17,10 +18,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Extract Android-ready project
+      - name: Extract latest BIZORA project
         run: |
           mkdir -p app-source
-          unzip -q "BIZORA-Android-Ready(2).zip" -d app-source
+          unzip -q "bizora (2).zip" -d app-source
           test -f app-source/package.json
           test -d app-source/src
 
@@ -53,6 +54,9 @@ jobs:
         run: |
           npx cap add android
           npx cap sync android
+          test -f ../google-services.json
+          mkdir -p android/app
+          cp ../google-services.json android/app/google-services.json
 
       - name: Build debug APK
         working-directory: app-source/android
