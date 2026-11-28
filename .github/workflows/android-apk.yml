@@ -36,7 +36,17 @@ jobs:
             grep -RniE "signInWithRedirect|signInWithPopup|signInWithGoogle|GoogleAuthProvider|FirebaseAuthentication|Capacitor.isNativePlatform|onAuthStateChanged|handleGoogle" src --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' || true
             echo
             echo "=== CAPACITOR AUTH DEPENDENCIES ==="
-            node -e "const p=require('./package.json'); console.log(JSON.stringify(Object.fromEntries(Object.entries({...p.dependencies,...p.devDependencies}).filter(([k])=>/capacitor.*auth|firebase.*auth/i.test(k))),null,2))"
+            node -e "const p=require('./package.json'); console.log(JSON.stringify({dependencies:Object.fromEntries(Object.entries({...p.dependencies,...p.devDependencies}).filter(([k])=>/capacitor.*auth|firebase.*auth|@capacitor\\//i.test(k))),capacitorConfig:p.capacitor},null,2))"
+            for file in src/lib/firebase.ts src/contexts/AuthContext.tsx src/components/auth/SignInScreen.tsx src/components/auth/OnboardingScreen.tsx capacitor.config.ts; do
+              if [ -f "$file" ]; then
+                echo
+                echo "=== FILE: $file ==="
+                sed -n '1,420p' "$file"
+              fi
+            done
+            echo
+            echo "=== ANDROID CONFIG REFERENCES ==="
+            grep -RniE "FirebaseAuthentication|google-services|com.google.gms.google-services|default_web_client_id|serverClientId|webClientId" android --include='*.gradle' --include='*.xml' --include='*.json' --include='*.kt' --include='*.java' || true
           } > ../auth-diagnostic.txt
 
       - name: Set up Node.js
