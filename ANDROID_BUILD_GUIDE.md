@@ -1,19 +1,28 @@
 # BIZORA Android build
 
-This project is prepared to be packaged with Capacitor.
+The Android APK is built from the latest project archive `bizora (2).zip` by GitHub Actions.
 
-## Build an APK with GitHub Actions
+## Build an APK
 
-1. Upload/extract the project files into the root of the `BIZORA-` GitHub repository. Keep the `.github/workflows/android-apk.yml` file and `capacitor.config.ts` at the repository root.
-2. Open the repository's **Actions** tab.
-3. Select **Build BIZORA Android APK** and choose **Run workflow** (or push a change to `main`).
-4. When the workflow completes, open its run and download the `BIZORA-Android-debug-APK` artifact.
-5. Extract the artifact ZIP; it contains `app-debug.apk`.
+1. Open the repository's Actions tab.
+2. Open the latest **Build BIZORA Android APK** run.
+3. Download the `BIZORA-Android-debug-APK` artifact.
+4. Extract the ZIP to get `app-debug.apk`.
 
-## Important authentication note
+## Google sign-in setup
 
-The current app uses Firebase Web Authentication with `signInWithPopup` for Google sign-in. That browser popup flow is not guaranteed to work inside the Android WebView. Before treating the APK as production-ready, configure native Google sign-in for Android (Firebase Android app registration, package name `com.bizora.app`, SHA-1/SHA-256 fingerprints, and the corresponding Google OAuth setup), then update the authentication flow to use the native provider. Email/password or other existing Firebase flows should be tested separately.
+The app uses the native `@capacitor-firebase/authentication` Google provider on Android and Firebase JS credentials for the app's JavaScript auth state.
+
+For Google sign-in to work in Android:
+
+1. In Firebase Console, open Project settings > Your apps > Android app `com.bizora.app`.
+2. Add the SHA-1 and SHA-256 fingerprints for the debug signing certificate used by the GitHub Actions build.
+3. In Authentication > Sign-in method, ensure Google is enabled.
+4. Download the updated `google-services.json` and replace the repository-root copy. The GitHub Actions workflow copies it into `android/app/google-services.json` during the build.
+5. A push of the updated `google-services.json` automatically starts a new APK build.
+
+The workflow caches the Android debug keystore so the debug signing fingerprints remain stable between builds. The current signing fingerprints are printed in the `BIZORA-auth-diagnostic` artifact for the latest run.
 
 ## Release note
 
-The workflow produces a **debug APK** for testing. A distributable release APK should be signed with a private release keystore stored in GitHub Actions secrets. Never commit the keystore or passwords to the repository.
+The workflow produces a debug APK for testing. A production release APK must be signed with a private release keystore; never commit the keystore or its passwords to the repository.
