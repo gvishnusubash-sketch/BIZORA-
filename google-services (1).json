@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "237830856748",
+    "project_id": "nomadic-beanbag-04cnq",
+    "storage_bucket": "nomadic-beanbag-04cnq.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237830856748:android:789c32eaadca46cf6db189",
+        "android_client_info": {
+          "package_name": "com.bizora.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237830856748-5a8q30ck05jdmovffr3imbigg3oigat4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bizora.app",
+            "certificate_hash": "ca5a9f92032176dd711b0ab94369a2a8d5998291"
+          }
+        },
+        {
+          "client_id": "237830856748-5dvohuo2oh63d6ccrsv1tc9psop28icc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzdqRCbxMo1rRiBj3reKVazNooDzJt_Dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237830856748-5dvohuo2oh63d6ccrsv1tc9psop28icc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
