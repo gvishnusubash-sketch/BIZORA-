@@ -93,8 +93,8 @@ jobs:
       - name: Restore stable Android debug signing key
         uses: actions/cache@v4
         with:
-          path: ~/.android/debug.keystore
-          key: bizora-android-debug-keystore-v1
+          path: ~/.config/.android/debug.keystore
+          key: bizora-android-debug-keystore-v2
 
       - name: Build debug APK and report signing fingerprints
         working-directory: app-source/android
