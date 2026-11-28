@@ -86,15 +86,7 @@ jobs:
           # Capawesome Firebase Authentication requires the Google provider
           # and Android Credential Manager dependencies to be enabled.
           if ! grep -q "rgcfaIncludeGoogle" android/variables.gradle; then
-            python3 - <<'PY'
-from pathlib import Path
-p = Path("android/variables.gradle")
-s = p.read_text()
-if "ext {" not in s:
-    raise SystemExit("Could not find ext block in android/variables.gradle")
-s = s.replace("ext {", "ext {\n    rgcfaIncludeGoogle = true\n    androidxCredentialsVersion = '1.3.0'", 1)
-p.write_text(s)
-PY
+            python3 -c "from pathlib import Path; p=Path('android/variables.gradle'); s=p.read_text(); p.write_text(s.replace('ext {', \"ext {\\n    rgcfaIncludeGoogle = true\\n    androidxCredentialsVersion = '1.3.0'\", 1))"
           fi
           grep -nE "rgcfaIncludeGoogle|androidxCredentialsVersion" android/variables.gradle
 
