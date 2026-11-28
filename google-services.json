@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "237830856748-5a8q30ck05jdmovffr3imbigg3oigat4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bizora.app",
+            "certificate_hash": "ca5a9f92032176dd711b0ab94369a2a8d5998291"
+          }
+        },
+        {
           "client_id": "237830856748-5dvohuo2oh63d6ccrsv1tc9psop28icc.apps.googleusercontent.com",
           "client_type": 3
         }
